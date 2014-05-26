@@ -1,6 +1,8 @@
 from pyramid.view import view_config
 from usersvc.repos.users import UsersRepo
 
+import json
+
 
 @view_config(route_name='users_index', renderer='json')
 def index(request):
@@ -24,16 +26,10 @@ def show(request):
 @view_config(route_name='users_update', renderer='json')
 def users_update(request):
     user_id = request.matchdict['user_id']
-    """
-    # Create a repo for the User and have that return the model
-    user_model = User(None, None)
-    user = user_model.get_user_by_id(user_id)
+    user_info = json.loads(request.body)
 
-    if user:
-        data = {'user': user.username}
-    else:
-        data = {'user': None}
+    user = UsersRepo().update_by_id(user_id, user_info)
+
+    data = {'user': None}
 
     return {'data': data, 'status': 0}
-    """
-    return {'data': None, 'status': 0}

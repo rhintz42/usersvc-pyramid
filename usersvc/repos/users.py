@@ -2,6 +2,9 @@ from usersvc.db_tables import DBSession
 from usersvc.db_tables.users import UsersTable
 from usersvc.models.users import User
 
+from sqlalchemy import update
+import transaction
+
 class UsersRepo:
     def __init__(self, service=None):
         self.service = service
@@ -18,8 +21,10 @@ class UsersRepo:
         users = DBSession.query(UsersTable).all()
         return [build_user(u) for u in users]
 
-    def update_by_id(self, user_id, user_model):
-        users = DBSession.query(UsersTable).all()
+    def update_by_id(self, user_id, user_info):
+        users = DBSession.query(UsersTable).filter(UsersTable.uid ==
+                user_id).update({'username':user_info['username']})
+        transaction.commit()
         return users
 
 def build_user(user_info):

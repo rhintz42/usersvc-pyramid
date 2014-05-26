@@ -117,9 +117,6 @@ def pytest_runtest_teardown(item):
     if should_use_trans(item):
         global trans
         testing.tearDown()
-        #try:
         trans.rollback()
         sess.session.close()
         sess.enabled = False
-        #except:
-        #    pass
