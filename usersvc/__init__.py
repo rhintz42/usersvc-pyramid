@@ -12,14 +12,18 @@ def user_routes(config):
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
-    engine = engine_from_config(settings, 'sqlalchemy.')
+    engine = engine_from_config(settings, 'sqlalchemy.',
+    connect_args={'check_same_thread': False})  # ADDING `check_same_thread` to
+                                                # False removes the multiple
+                                                # threads error with SQLite
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
     config = Configurator(settings=settings)
 
+    config.add_static_view('static', 'static', cache_max_age=3600)
     config = Configurator(settings=settings)
     config.add_route('home', '/')
     config.include(user_routes, route_prefix='/users')
-    config.add_notfound_view(HTTPNotFound('Slash not at end, adding one.'), append_slash=True)
+    #config.add_notfound_view(HTTPNotFound('Slash not at end, adding one.'), append_slash=True)
     config.scan()
     return config.make_wsgi_app()
