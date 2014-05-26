@@ -24,6 +24,6 @@ def main(global_config, **settings):
     config = Configurator(settings=settings)
     config.add_route('home', '/')
     config.include(user_routes, route_prefix='/users')
-    #config.add_notfound_view(HTTPNotFound('Slash not at end, adding one.'), append_slash=True)
+    config.add_notfound_view(HTTPNotFound('Slash not at end, adding one.'), append_slash=True)
     config.scan()
     return config.make_wsgi_app()
