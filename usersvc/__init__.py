@@ -8,6 +8,8 @@ def user_routes(config):
     config.add_route('users_index', '/', request_method='GET')
     config.add_route('users_show', '/{user_id}', request_method='GET')
     config.add_route('users_update', '/{user_id}', request_method='PUT')
+    config.add_route('users_create', '/', request_method='POST')
+    config.add_route('users_delete', '/{user_id}', request_method='DELETE')
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.

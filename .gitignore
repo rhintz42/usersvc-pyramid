@@ -1,6 +1,6 @@
 *.swp
 *.pyc
 *egg-info
-*.sqlite
+*.sqlite*
 *__pycache__
 sqltutorial.sqlite

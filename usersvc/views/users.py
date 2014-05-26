@@ -33,3 +33,25 @@ def users_update(request):
     data = {'user': None}
 
     return {'data': data, 'status': 0}
+
+
+@view_config(route_name='users_create', renderer='json')
+def users_create(request):
+    user_info = json.loads(request.body)
+
+    result = UsersRepo().create(user_info)
+
+    data = {'user': result}
+
+    return {'data': data, 'status': 0}
+
+
+@view_config(route_name='users_delete', renderer='json')
+def users_delete(request):
+    user_id = request.matchdict['user_id']
+
+    result = UsersRepo().delete(user_id)
+
+    data = {'user': result}
+
+    return {'data': data, 'status': 0}

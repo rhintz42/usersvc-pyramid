@@ -9,6 +9,7 @@ class UsersRepo:
     def __init__(self, service=None):
         self.service = service
 
+    # Change to `get_by_id`
     def get_user_by_id(self, user_id):
         result = DBSession.query(UsersTable).filter(UsersTable.uid == user_id)
         try:
@@ -21,11 +22,47 @@ class UsersRepo:
         users = DBSession.query(UsersTable).all()
         return [build_user(u) for u in users]
 
+    # TODO: Need to make sure can't update username to one that already exists
     def update_by_id(self, user_id, user_info):
-        users = DBSession.query(UsersTable).filter(UsersTable.uid ==
-                user_id).update({'username':user_info['username']})
-        transaction.commit()
-        return users
+        try:
+            user = DBSession.query(UsersTable).filter(UsersTable.uid ==
+                    user_id).update({'username':user_info['username']})
+            transaction.commit()
+        except:
+            return {'status': '1', 'data': 'Username Exists'}
+            
+        return {'status': '0', 'data': 'Update User Successful'}
+
+    # TODO: What should I return from this function?
+    #           * Need to be able to say whether creating successful or not
+    # TODO: Am I adding objects correctly? If I do this, it gets committed,
+    #           which makes it harder todo integration tests
+    def create(self, user_info):
+        user = UsersTable(username=user_info['username'])
+        status = DBSession.add(user)
+        try:
+            transaction.commit()
+        except:
+            return {'status': '1', 'data': 'Username Exists'}
+
+        return {'status': '0', 'data': 'Create User Successful'}
+
+    def delete(self, user_id):
+        try:
+            user = DBSession.query(UsersTable).filter(UsersTable.uid ==
+                        user_id).one()
+        except:
+            return {'status': '2', 'data': 'No User Found'}
+
+        try:
+            status = DBSession.delete(user)
+            transaction.commit()
+        except:
+            transaction.abort() # This seems necessary for the functional tests
+                                #   to run
+            return {'status': '1', 'data': 'Something Went Wrong'}
+
+        return {'status': '0', 'data': 'Create User Successful'}
 
 def build_user(user_info):
     user = User(user_info.uid, user_info.username)
