@@ -52,8 +52,8 @@ def test_users_delete(session, wsgiapp):
 
 
 @pytest.mark.functional
-def test_users_index_2(session, wsgiapp):
-    response = wsgiapp.get('/users/')
+def test_users_verify_password(session, wsgiapp):
+    response = wsgiapp.post_json('/users/2/verify_password', {'password': 'hello'})
+    import pdb;pdb.set_trace()
     assert response.status == '200 OK'
-
 

@@ -10,6 +10,7 @@ def user_routes(config):
     config.add_route('users_update', '/{user_id}', request_method='PUT')
     config.add_route('users_create', '/', request_method='POST')
     config.add_route('users_delete', '/{user_id}', request_method='DELETE')
+    config.add_route('users_verify_password', '/{user_id}/verify_password', request_method='POST')
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.

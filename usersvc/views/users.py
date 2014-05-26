@@ -55,3 +55,17 @@ def users_delete(request):
     data = {'user': result}
 
     return {'data': data, 'status': 0}
+
+
+@view_config(route_name='users_verify_password', renderer='json')
+def users_verify_password(request):
+    user_id = request.matchdict['user_id']
+    password = json.loads(request.body)['password']
+
+    result = UsersRepo().verify_user(user_id, password)
+
+    data = {'verified_user': result}
+
+    return {'data': data, 'status': 0}
+
+

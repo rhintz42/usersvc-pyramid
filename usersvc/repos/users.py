@@ -64,6 +64,10 @@ class UsersRepo:
 
         return {'status': '0', 'data': 'Create User Successful'}
 
+    #Need to encrypt password
+    def verify_user(self, user_id, password):
+        return False
+
 def build_user(user_info):
     user = User(user_info.uid, user_info.username)
     user.email = user_info.email
