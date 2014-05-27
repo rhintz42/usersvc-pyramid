@@ -19,6 +19,7 @@ requires = [
     'zope.sqlalchemy',
     'webtest',
     'requests',
+    'bcrypt',
     ]
 
 setup(name='usersvc',

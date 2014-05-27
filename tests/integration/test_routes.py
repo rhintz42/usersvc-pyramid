@@ -43,17 +43,14 @@ def test_users_update(session, wsgiapp):
 
 @pytest.mark.functional
 def test_users_delete(session, wsgiapp):
-    #import pdb;pdb.set_trace()
     #with mock.patch('usersvc.repos.users.UsersRepo.delete') as delete:
         #delete.return_value = {'status': '0', 'data': 'Create User Successful'}
     response = wsgiapp.delete('/users/1')
-    #import pdb;pdb.set_trace()
     assert response.status == '200 OK'
 
 
 @pytest.mark.functional
 def test_users_verify_password(session, wsgiapp):
     response = wsgiapp.post_json('/users/2/verify_password', {'password': 'hello'})
-    import pdb;pdb.set_trace()
     assert response.status == '200 OK'
 
